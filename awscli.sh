@@ -12,10 +12,6 @@ lockpath=~/.aws/sessionlock
 [ -f $lockpath ]
 sesslock=$?
 let "cdate=$(date "+%s")-43200"
-echo $(date "+%s")
-echo $cdate
-echo $odate
-echo $sesslock
 if (($sesslock == 0)); then
 	odate=$(head -n1 $lockpath)
 	if [[ $cdate -lt $odate ]]; then
