@@ -16,6 +16,9 @@ if (($sesslock == 0)); then
 	odate=$(head -n1 $lockpath)
 	if [[ $cdate -lt $odate ]]; then
                 echo "Exporting existing session"
+		keyid=$(sed -n -e 2p ~/.aws/sessionlock)
+		accesskey=AWS_SECRET_ACCESS_KEY=$(sed -n -e 3p ~/.aws/sessionlock)
+		sessiontoken=$(sed -n -e 4p ~/.aws/sessionlock)
                 locked=1
 	fi	
 else
