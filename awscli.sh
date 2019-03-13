@@ -23,8 +23,6 @@ else
 fi
 
 serial=$(cat ~/.aws/serial)
-keyid=$(grep key_id ~/.aws/credentials | awk -F \=\  '{ print $(NF) }')
-accesskey=$(grep secret_access ~/.aws/credentials | awk -F \=\  '{ print $(NF) }')
 
 # Generate session token
 if [[ "$locked" -ne 1 ]]; then
@@ -37,6 +35,9 @@ if [[ "$locked" -ne 1 ]]; then
 
 	sts=$(aws sts get-session-token --serial-number $serial --token-code $token --profile default)
 	sessiontoken=$(echo $sts | awk '{print $(NF)}')
+	keyid=$(echo $sts | awk '{print $2}')
+	accesskey=$(echo $sts | awk '{print $4}')
+	echo $sessiontoken $keyid $accesskey
 	touch $lockpath
 	echo $(date "+%s") > $lockpath
 	echo $keyid >> $lockpath
@@ -46,7 +47,12 @@ else
 	sessiontoken=$(awk 'NR==4' $lockpath)
 fi
 
+linebreak="**==================**"
+
 export AWS_ACCESS_KEY_ID=$keyid
 export AWS_SECRET_ACCESS_KEY=$accesskey
 export AWS_SESSION_TOKEN=$sessiontoken
+echo "Access Key ID: $keyid"
+echo "Secret Access Key: $accesskey"
+echo $linebreak
 echo "Session Token: $sessiontoken"
