@@ -16,7 +16,8 @@ Useage:
 source awscli.sh [MFA Code]
 
 - The MFA code will be prompted for if not included
-- The script MUST be sourced or it will export the environment variables to a subshell, largely defeating the point.
+- The script can be sourced (e.g. source awscli.sh 123456) to export directly to your shell. Regardless, it will print out the keys as if you were running the get-session-token commands manually.
+- Keys are also piped to the sessionlock file in ~/.aws/sessionlock
 
 License:
 This script is free to use or modify for personal and commercial use. Any derivative works should be held under the same license.
